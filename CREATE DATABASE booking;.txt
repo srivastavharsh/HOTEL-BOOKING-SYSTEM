@@ -1,0 +1,147 @@
+CREATE DATABASE booking;
+USE booking;
+Show databases;
+
+CREATE TABLE booking (
+  id int(11) UNSIGNED NOT NULL,
+  cid int(11) UNSIGNED NOT NULL,
+  status varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT 'pending',
+  notes varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table booking
+--
+
+INSERT INTO booking (id, cid, status, notes) VALUES
+(12, 10, 'CONFIRMED', NULL),
+(13, 10, 'confirmed', NULL),
+(14, 10, 'CANCELLED', NULL),
+(15, 13, 'CANCELLED', NULL),
+(16, 13, 'CONFIRMED', NULL),
+(17, 13, 'CANCELLED', NULL),
+(18, 13, 'PENDING', NULL),
+(19, 13, 'PENDING', NULL),
+(20, 13, 'PENDING', NULL);
+select * from booking;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table customer
+--
+
+CREATE TABLE customer (
+  cid int(11) UNSIGNED NOT NULL,
+  fullname varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  email varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  password varchar(150) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  phone varchar(25) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  isadmin int(1) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table customer
+--
+
+INSERT INTO customer (cid, fullname, email, password, phone, isadmin) VALUES
+(10, 'Harsh Shrivastava', 'harshu45@hotmail.com', 'Sw@#$!%', '7689564321', 0),
+(11, 'admin@gmail.com', 'admin@gmail.com', 'A#$^%(', '7645346771', 1),
+(12, 'admin@admin.com', 'admin@admin.com', 'Aa$^$7%^', '', 1),
+(13, 'Ashutosh Kumar', 'ashutoshkumar05rahul@gmail.com', 'R$#%^!', '9846677123', 0),
+(14, 'Anshika Singh', 'anshika123@gmail.com', '$2y$1zub2', '6763490456', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table reservation
+--
+
+CREATE TABLE reservation (
+  id int(11) UNSIGNED NOT NULL,
+  start varchar(30) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  end varchar(30) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  type varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  requirement varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT 'no preference',
+  adults int(2) NOT NULL,
+  children int(2) DEFAULT '0',
+  requests varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  hash varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Dumping data for table reservation
+--
+
+INSERT INTO reservation (id, start, end, type, requirement, adults, children, requests, timestamp, hash) VALUES
+(12, '2025-01-09', '2025-05-11', 'double', 'non smoking', 2, 0, '', '2018-04-19 22:04:42', '5ad9127abbdf6'),
+(13, '2025-04-24', '2025-04-25', 'deluxe', 'no preference', 1, 0, '', '2018-04-23 15:45:33', '5addff9dafa97'),
+(14, '2025-04-27', '2025-04-30', 'deluxe', 'no preference', 1, 0, '', '2018-04-24 05:27:13', '5adec03166177'),
+(15, '2025-03-01', '2025-03-11', 'Single', 'non smoking', 3, 0, 'asd', '2023-02-26 20:42:39', '63fbc43fe4661'),
+(16, '2025-03-02', '2025-03-10', 'Double', 'no preference', 2, 0, 'alert(&quot;hello&quot;);', '2023-02-26 20:48:43', '63fbc5abf0486'),
+(17, '2025-02-27', '2025-03-11', 'Double', 'no preference', 2, 0, '', '2023-02-26 22:11:01', '63fbd8f561240'),
+(18, '2025-02-27', '2025-03-05', 'Single', 'no preference', 1, 0, '', '2023-02-26 22:29:00', '63fbdd2c9e8dc'),
+(19, '2025-02-26', '2025-03-11', 'Single', 'no preference', 1, 0, '', '2023-02-27 01:18:37', '63fc04ed64776'),
+(20, '2025-02-26', '2025-03-11', 'Double', 'no preference', 1, 0, '', '2023-02-27 04:34:17', '63fc32c9c651c');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table booking
+--
+ALTER TABLE booking
+  ADD PRIMARY KEY (id),
+  ADD UNIQUE KEY booking_id_uindex (id),
+  ADD KEY booking_customer__fk (cid);
+
+--
+-- Indexes for table customer
+--
+ALTER TABLE customer
+  ADD PRIMARY KEY (cid),
+  ADD UNIQUE KEY id_UNIQUE (cid);
+
+--
+-- Indexes for table reservation
+--
+ALTER TABLE reservation
+  ADD PRIMARY KEY (id);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table booking
+--
+ALTER TABLE booking
+  MODIFY id int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table customer
+--
+ALTER TABLE customer
+  MODIFY cid int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table booking
+--
+ALTER TABLE booking
+  ADD CONSTRAINT booking_customer__fk FOREIGN KEY (cid) REFERENCES customer (cid) ON DELETE CASCADE;
+
+--
+-- Constraints for table reservation
+--
+ALTER TABLE reservation
+  ADD CONSTRAINT reservation_booking__fk FOREIGN KEY (id) REFERENCES booking (id) ON DELETE CASCADE;
+COMMIT;
+
+select * from customer;
+select * from reservation;
+select * from booking;
